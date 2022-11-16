@@ -22,7 +22,7 @@ function varargout = main(varargin)
 
 % Edit the above text to modify the response to help main
 
-% Last Modified by GUIDE v2.5 16-Nov-2022 03:15:43
+% Last Modified by GUIDE v2.5 16-Nov-2022 15:26:14
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -117,7 +117,7 @@ myImago2 = getappdata(0, 'Image2');
 axes(handles.hist1);
 hold off;
 cla reset;
-plot(x,R1,'Red',x,G1,'Green', x,B1,'Blue');
+plot(x,R1,'Red',x,G1,'Green', x,B1,'Blue', 'LineWidth', 1);
 xlim([0,255]);
 box off;
 set(gca,'xtick',[]);
@@ -133,7 +133,7 @@ if size(myImago2,3)==3
     axes(handles.hist2);
     hold off;
     cla reset;
-    plot(x,R2,'Red',x,G2,'Green', x,B2,'Blue','LineWidth',1.5);
+    plot(x,R2,'Red',x,G2,'Green', x,B2,'Blue','LineWidth',1);
     xlim([0,255]);
     box off;
     set(gca,'xtick',[]);
@@ -297,3 +297,14 @@ set(gca,'xtick',[]);
 set(gca,'ytick',[]);
 set(gca,'xcolor','none');
 set(gca,'ycolor','none');
+
+
+% --- Executes on button press in save.
+function save_Callback(hObject, eventdata, handles)
+% hObject    handle to save (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+myImago2 = getappdata(0, 'Image2');
+[Save, savename] = uiputfile('*.jpg','save this file');
+fname = fullfile(savename, Save);
+imwrite(myImago2, fname);
