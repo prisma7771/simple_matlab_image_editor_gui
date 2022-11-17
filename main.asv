@@ -382,16 +382,16 @@ function con_Callback(hObject, eventdata, handles)
 myImago2 = getappdata(0, 'Image1');
 myImago_new = rgb2hsv(myImago2);
 
-start = histeq(myImago_new(:,:,3));
-myImago_new(:,:,3) = start;
+start = histeq(myImago_new(:,:,))
 
-new_imago = hsv2rgb(myImago_new);
+
+new_imago = uint8(new .* 255);
 
 setappdata(0,'Image2',new_imago);
 axes(handles.img2);
 hold off;
 cla reset;
-imshow(new_imago);
+imshow(new);
 
 % --- Executes on button press in sharp.
 function sharp_Callback(hObject, eventdata, handles)
