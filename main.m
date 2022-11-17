@@ -22,7 +22,7 @@ function varargout = main(varargin)
 
 % Edit the above text to modify the response to help main
 
-% Last Modified by GUIDE v2.5 17-Nov-2022 08:19:54
+% Last Modified by GUIDE v2.5 17-Nov-2022 10:45:16
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -350,48 +350,26 @@ function br_CreateFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
-
-% --- Executes on selection change in list.
-function list_Callback(hObject, eventdata, handles)
-% hObject    handle to list (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: contents = cellstr(get(hObject,'String')) returns list contents as cell array
-%        contents{get(hObject,'Value')} returns selected item from list
-
-
-% --- Executes during object creation, after setting all properties.
-function list_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to list (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: listbox controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
-
 % --- Executes on button press in con.
 function con_Callback(hObject, eventdata, handles)
 % hObject    handle to con (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+n = round(str2num(get(handles.c, 'string')));
 myImago2 = getappdata(0, 'Image1');
 myImago_new = rgb2hsv(myImago2);
 
-start = histeq(myImago_new(:,:,3));
+start = histeq(myImago_new(:,:,3),n);
 myImago_new(:,:,3) = start;
 
 new_imago = hsv2rgb(myImago_new);
+new_hist = uint8(new_imago .* 255);
 
-setappdata(0,'Image2',new_imago);
+setappdata(0,'Image2',new_hist);
 axes(handles.img2);
 hold off;
 cla reset;
-imshow(new_imago);
+imshow(new_hist);
 
 % --- Executes on button press in sharp.
 function sharp_Callback(hObject, eventdata, handles)
@@ -440,6 +418,29 @@ set(handles.sp,'String',strcat(num2str(sp_sliderx)));
 % --- Executes during object creation, after setting all properties.
 function sp_slider_CreateFcn(hObject, eventdata, handles)
 % hObject    handle to sp_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+
+
+% --- Executes on slider movement.
+function c_slider_Callback(hObject, eventdata, handles)
+% hObject    handle to c_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+c_sliderx = round(get(hObject,'Value'));
+set(handles.c,'String',strcat(num2str(c_sliderx)));
+
+% --- Executes during object creation, after setting all properties.
+function c_slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to c_slider (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
